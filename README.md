@@ -344,6 +344,16 @@ Or you can use `require("./someFile.ts")`, which will try to use default exporte
 
 Note: For `examples` a required variable must be an array.
 
+## Examples
+
+* | root  
+  * `npm install`
+  * `npm build`
+* | SOME [test's program](test/programs)
+  * _Example:_ [namespace](test/programs/namespace)
+  * `node ../../../bin/typescript-json-schema main.ts Type`
+  * 👀check the stdout == schema.json 👀
+
 ## Background
 
 * -- inspired on -- [Typson](https://github.com/lbovet/typson/) 
