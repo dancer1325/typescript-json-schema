@@ -2,61 +2,73 @@
 
 [![npm version](https://img.shields.io/npm/v/typescript-json-schema.svg)](https://www.npmjs.com/package/typescript-json-schema) ![Test](https://github.com/YousefED/typescript-json-schema/workflows/Test/badge.svg)
 
-Generate json-schemas from your Typescript sources. This library is lightweight and more or less in maintenance mode. For a more complete JSON schema generator, take a look at [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator).
+* == library /
+  * lightweight
+  * | maintenance mode
+  * -- compatible with -- recent Typescript versions
+  * -- use -- 
+    * Typescript compiler internally
+    * type hierarchy
+* allows
+  * from your Typescript sources -- generate -- json-schemas  
+* ALTERNATIVES
+  * [ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator)
 
 ## Features
 
-- Compiles your Typescript program to get complete type information.
-- Translates required properties, extends, annotation keywords, property initializers as defaults. You can find examples for these features in the [api doc](https://github.com/YousefED/typescript-json-schema/tree/master/api.md) or the [test examples](https://github.com/YousefED/typescript-json-schema/tree/master/test/programs).
+- your Typescript program -- is compiled to get -- complete type information
+- required properties, extends, annotation keywords, property initializers -- are translated as -- defaults
+  - _Examples:_
+    - [api](api.md)
+    - [test examples](test/programs)
 
-## Usage
+## how to use?
 
-### Command line
+### -- via -- CL
 
-- Install with `npm install typescript-json-schema -g`
-- Generate schema from a typescript type: `typescript-json-schema project/directory/tsconfig.json TYPE`
+- `npm install typescript-json-schema -g`
+- `typescript-json-schema [options] <path-to-typescript-files-or-tsconfig> <type>`
+  - from a typescript type -- generate a -- schema 
+  - `<path-to-typescript-files-or-tsconfig>`
+    - recommendations
+      - use `tsconfig.json`
+    - if you specify DIRECTLY .ts files -> use some built-in compiler presets
+  - `<type>`
+    - ALLOWED
+      - 1! FULLY qualified type
+      - `"*"` == ALL types
+  - options
+    - --refs                Create shared ref definitions.                               [boolean] [default: true]
+    - --aliasRefs           Create shared ref definitions for the type aliases.          [boolean] [default: false]
+    - --topRef              Create a top-level ref definition.                           [boolean] [default: false]
+    - --titles              Creates titles in the output schema.                         [boolean] [default: false]
+    - --defaultProps        Create default properties definitions.                       [boolean] [default: false]
+    - --noExtraProps        Disable additional properties in objects by default.         [boolean] [default: false]
+    - --propOrder           Create property order definitions.                           [boolean] [default: false]
+    - --required            Create required array for non-optional properties.           [boolean] [default: false]
+    - --strictNullChecks    Make values non-nullable by default.                         [boolean] [default: false]
+    - --esModuleInterop     Use esModuleInterop when loading typescript modules.         [boolean] [default: false]
+    - --skipLibCheck        Use skipLibCheck when loading typescript modules.            [boolean] [default: false]
+    - --useTypeOfKeyword    Use `typeOf` keyword (https://goo.gl/DC6sni) for functions.  [boolean] [default: false]
+    - --out, -o             The output file, defaults to using stdout
+    - --validationKeywords  Provide additional validation keywords to include            [array]   [default: []]
+    - `--include [array]`
+      - restrict types / generate
+      - by default, `[]`
+      - use cases
+        - large projects
+    - --ignoreErrors        Generate even if the program has errors.                     [boolean] [default: false]
+    - --excludePrivate      Exclude private members from the schema                      [boolean] [default: false]
+    - --uniqueNames         Use unique names for type symbols.                           [boolean] [default: false]
+    - --rejectDateType      Rejects Date fields in type definitions.                     [boolean] [default: false]
+    - --id                  Set schema id.                                               [string]  [default: ""]
+    - --defaultNumberType   Default number type.                                         [choices: "number", "integer"] [default: "number"]
+    - --tsNodeRegister      Use ts-node/register (needed for require typescript files).  [boolean] [default: false]
+    - --constAsEnum         Use enums with a single value when declaring constants.      [boolean] [default: false]
+    - --experimentalDecorators  Use experimentalDecorators when loading typescript modules [boolean] [default: true]
+  - _Example:_ `typescript-json-schema "project/directory/**/*.ts" TYPE`
 
-To generate files for only _some_ types in `tsconfig.json` specify
-filenames or globs with the `--include` option. This is especially useful for large projects.
-
-In case no `tsconfig.json` is available for your project, you can directly specify the .ts files (this in this case we use some built-in compiler presets):
-
-- Generate schema from a typescript type: `typescript-json-schema "project/directory/**/*.ts" TYPE`
-
-The `TYPE` can either be a single, fully qualified type or `"*"` to generate the schema for all types.
-
-```
-Usage: typescript-json-schema <path-to-typescript-files-or-tsconfig> <type>
-
-Options:
-  --refs                Create shared ref definitions.                               [boolean] [default: true]
-  --aliasRefs           Create shared ref definitions for the type aliases.          [boolean] [default: false]
-  --topRef              Create a top-level ref definition.                           [boolean] [default: false]
-  --titles              Creates titles in the output schema.                         [boolean] [default: false]
-  --defaultProps        Create default properties definitions.                       [boolean] [default: false]
-  --noExtraProps        Disable additional properties in objects by default.         [boolean] [default: false]
-  --propOrder           Create property order definitions.                           [boolean] [default: false]
-  --required            Create required array for non-optional properties.           [boolean] [default: false]
-  --strictNullChecks    Make values non-nullable by default.                         [boolean] [default: false]
-  --esModuleInterop     Use esModuleInterop when loading typescript modules.         [boolean] [default: false]
-  --skipLibCheck        Use skipLibCheck when loading typescript modules.            [boolean] [default: false]
-  --useTypeOfKeyword    Use `typeOf` keyword (https://goo.gl/DC6sni) for functions.  [boolean] [default: false]
-  --out, -o             The output file, defaults to using stdout
-  --validationKeywords  Provide additional validation keywords to include            [array]   [default: []]
-  --include             Further limit tsconfig to include only matching files        [array]   [default: []]
-  --ignoreErrors        Generate even if the program has errors.                     [boolean] [default: false]
-  --excludePrivate      Exclude private members from the schema                      [boolean] [default: false]
-  --uniqueNames         Use unique names for type symbols.                           [boolean] [default: false]
-  --rejectDateType      Rejects Date fields in type definitions.                     [boolean] [default: false]
-  --id                  Set schema id.                                               [string]  [default: ""]
-  --defaultNumberType   Default number type.                                         [choices: "number", "integer"] [default: "number"]
-  --tsNodeRegister      Use ts-node/register (needed for require typescript files).  [boolean] [default: false]
-  --constAsEnum         Use enums with a single value when declaring constants.      [boolean] [default: false]
-  --experimentalDecorators  Use experimentalDecorators when loading typescript modules.
-   [boolean] [default: true]
-```
-
-### Programmatic use
+### -- via -- Programmatic use
 
 ```ts
 import { resolve } from "path";
@@ -119,21 +131,23 @@ generator.getSchemaForSymbol(symbolList[1].name);
 const fullSymbolList = generator.getSymbols();
 ```
 
-`getSymbols('<SymbolName>')` and `getSymbols()` return an array of `SymbolRef`, which is of the following format:
+* `getSymbols('<SymbolName>')` & `getSymbols()`
+  * return `[SymbolRef]` /
+    ```ts
+    type SymbolRef = {
+        name: string;
+        typeName: string;
+        fullyQualifiedName: string;
+        symbol: ts.Symbol;
+    };
+    ```
 
-```ts
-type SymbolRef = {
-    name: string;
-    typeName: string;
-    fullyQualifiedName: string;
-    symbol: ts.Symbol;
-};
-```
+* `getUserSymbols` & `getMainFileSymbols`
+  * return `[string]`
 
-`getUserSymbols` and `getMainFileSymbols` return an array of `string`.
+### -- via --Annotations
 
-### Annotations
-
+* TODO:
 The schema generator converts annotations to JSON schema properties.
 
 For example
@@ -232,7 +246,7 @@ Translation:
 
 This same syntax can be used for `contains` and `additionalProperties`.
 
-### `integer` type alias
+### -- via -- `integer` type alias
 
 If you create a type alias `integer` for `number` it will be mapped to the `integer` type in the generated JSON schema.
 
@@ -247,7 +261,7 @@ interface MyObject {
 
 Note: this feature doesn't work for generic types & array types, it mainly works in very simple cases.
 
-### `require` a variable from a file
+### -- via -- `require` a variable from a file
 
 (for requiring typescript files is needed to set argument `tsNodeRegister` to true)
 
@@ -311,16 +325,18 @@ Translation:
 }
 ```
 
-Also you can use `require(".").example`, which will try to find exported variable with name 'example' in current file. Or you can use `require("./someFile.ts")`, which will try to use default exported variable from 'someFile.ts'.
+Also you can use `require(".").example`, which will try to find exported variable with name 'example' in current file. 
+Or you can use `require("./someFile.ts")`, which will try to use default exported variable from 'someFile.ts'.
 
 Note: For `examples` a required variable must be an array.
 
 ## Background
 
-Inspired and builds upon [Typson](https://github.com/lbovet/typson/), but typescript-json-schema is compatible with more recent Typescript versions. Also, since it uses the Typescript compiler internally, more advanced scenarios are possible. If you are looking for a library that uses the AST instead of the type hierarchy and therefore better support for type aliases, have a look at [vega/ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator).
+* -- inspired on -- [Typson](https://github.com/lbovet/typson/) 
+* if you are looking for a library / BETTER support for type aliases -> see [vega/ts-json-schema-generator](https://github.com/vega/ts-json-schema-generator)
+  * Reason: 🧠uses the AST🧠  
 
-## Debugging
+## How to debug?
 
-`npm run debug -- test/programs/type-alias-single/main.ts --aliasRefs true MyString`
-
-And connect via the debugger protocol.
+* `npm run debug -- test/programs/type-alias-single/main.ts --aliasRefs true MyString`
+* connect -- via the -- debugger protocol
