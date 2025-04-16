@@ -39,18 +39,32 @@
       - `"*"` == ALL types
   - options
     - --refs                Create shared ref definitions.                               [boolean] [default: true]
-    - --aliasRefs           Create shared ref definitions for the type aliases.          [boolean] [default: false]
+    - `--aliasRefs`
+      - Create SHARED ref definitions / type aliases
+      - `boolean`
+        - by default, `false`
     - --topRef              Create a top-level ref definition.                           [boolean] [default: false]
     - --titles              Creates titles in the output schema.                         [boolean] [default: false]
     - --defaultProps        Create default properties definitions.                       [boolean] [default: false]
-    - --noExtraProps        Disable additional properties in objects by default.         [boolean] [default: false]
-    - --propOrder           Create property order definitions.                           [boolean] [default: false]
-    - --required            Create required array for non-optional properties.           [boolean] [default: false]
+    - `--noExtraProps`
+      - disable objects' ADDITIONAL properties 
+      - `boolean`
+        - by default, `false`
+    - `--propOrder`
+      - create property order definitions
+      - `boolean`
+        - by default, `false`
+    - `--required`
+      - create required [] / NON-OPTIONAL properties
+      - `boolean`
+        - by default, `false`
     - --strictNullChecks    Make values non-nullable by default.                         [boolean] [default: false]
     - --esModuleInterop     Use esModuleInterop when loading typescript modules.         [boolean] [default: false]
     - --skipLibCheck        Use skipLibCheck when loading typescript modules.            [boolean] [default: false]
     - --useTypeOfKeyword    Use `typeOf` keyword (https://goo.gl/DC6sni) for functions.  [boolean] [default: false]
-    - --out, -o             The output file, defaults to using stdout
+    - `--out, -o`
+      - output file
+        - by default, stdout
     - --validationKeywords  Provide additional validation keywords to include            [array]   [default: []]
     - `--include [array]`
       - restrict types / generate
